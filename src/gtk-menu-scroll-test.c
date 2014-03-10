@@ -39,20 +39,26 @@ struct _GtkmenuscrolltestPrivate
 
 
 gboolean menu_add_entry (gpointer user_data) {
-	static GtkMenuItem *menuitem = NULL;
+	static GtkMenuItem *menuitem1 = NULL;
+	static GtkMenuItem *menuitem2 = NULL;
 	static gboolean attached = FALSE;
-	if(menuitem == NULL) {
-		menuitem = gtk_menu_item_new_with_label ("Foo");
-		g_object_ref(menuitem);
-		gtk_widget_show(menuitem);
+	if(menuitem1 == NULL) {
+		menuitem1 = gtk_menu_item_new_with_label ("Foo");
+		menuitem2 = gtk_menu_item_new_with_label ("Bar");
+		g_object_ref(menuitem1);
+		g_object_ref(menuitem2);
+		gtk_widget_show(menuitem1);
+		gtk_widget_show(menuitem2);
 	}
 	GtkMenu *menu = GTK_MENU(user_data);
-	g_message("Menu: %p, Menuitem: %p", user_data, menuitem);
+	g_message("Menu: %p, Menuitem1: %p, Menuitem2: %p", user_data, menuitem1, menuitem2);
 	if(attached) {
-		gtk_container_remove (GTK_CONTAINER(menu), GTK_WIDGET(menuitem));
+		gtk_container_remove (GTK_CONTAINER(menu), GTK_WIDGET(menuitem1));
+		gtk_container_remove (GTK_CONTAINER(menu), GTK_WIDGET(menuitem2));
 		attached = FALSE;
 	} else {
-		gtk_menu_shell_append (GTK_MENU_SHELL(menu), GTK_WIDGET(menuitem));
+		gtk_menu_shell_append (GTK_MENU_SHELL(menu), GTK_WIDGET(menuitem1));
+		gtk_menu_shell_append (GTK_MENU_SHELL(menu), GTK_WIDGET(menuitem2));
 		attached = TRUE;
 	}
 	gtk_widget_queue_draw (menu);
